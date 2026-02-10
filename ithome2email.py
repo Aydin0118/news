@@ -9,10 +9,12 @@ from smtplib import SMTPException
 
 # ---------------------- 配置项（从GitHub Secrets读取） ----------------------
 # 发件人信息
-sender_email = os.getenv("SENDER_EMAIL")  # 发件人邮箱（如xxx@qq.com）
-sender_auth_code = os.getenv("SENDER_AUTH_CODE")  # 邮箱SMTP授权码
-smtp_server = os.getenv("SMTP_SERVER", "smtp.qq.com")  # QQ邮箱SMTP服务器，163邮箱是smtp.163.com
-smtp_port = int(os.getenv("SMTP_PORT", 465))  # SSL端口
+smtp_server = "smtp.office365.com"
+smtp_port = 587
+
+with smtplib.SMTP(smtp_server, smtp_port, timeout=30) as server:
+    server.starttls()
+    server.login(aydinid@outlook.com, qwertyuiop00)  # 这里用邮箱密码，不是授权码
 
 # 收件人信息
 receiver_email = os.getenv("RECEIVER_EMAIL")  # 收件人邮箱（可多个，用逗号分隔）

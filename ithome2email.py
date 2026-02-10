@@ -14,7 +14,7 @@ smtp_port = 587
 
 with smtplib.SMTP(smtp_server, smtp_port, timeout=30) as server:
     server.starttls()
-    server.login(aydinid@outlook.com, qwertyuiop00)  # 这里用邮箱密码，不是授权码
+    server.login('aydinid@outlook.com', 'qwertyuiop00')  # 这里用邮箱密码，不是授权码
 
 # 收件人信息
 receiver_email = os.getenv("RECEIVER_EMAIL")  # 收件人邮箱（可多个，用逗号分隔）

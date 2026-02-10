@@ -4,6 +4,8 @@ import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 import os
+import time
+from smtplib import SMTPException
 
 # ---------------------- 配置项（从GitHub Secrets读取） ----------------------
 # 发件人信息
@@ -57,25 +59,32 @@ def crawl_ithome():
         return f"<h3>爬取失败</h3><p>错误信息：{str(e)}</p>"
 
 # ---------------------- 发送邮件 ----------------------
-def send_email(content):
-    """发送HTML格式邮件"""
-    try:
-        # 构建邮件对象
-        msg = MIMEText(content, "html", "utf-8")
-        msg["From"] = Header(f"IT之家每日推送 <{sender_email}>", "utf-8")
-        msg["To"] = Header(receiver_email, "utf-8")
-        msg["Subject"] = Header("📮 IT之家今日热点推送", "utf-8")
+def send_email(content, max_retries=3):
+    """发送HTML格式邮件，带重试机制"""
+    retries = 0
+    while retries < max_retries:
+        try:
+            # 构建邮件对象
+            msg = MIMEText(content, "html", "utf-8")
+            msg["From"] = Header(f"IT之家每日推送 <{sender_email}>", "utf-8")
+            msg["To"] = Header(receiver_email, "utf-8")
+            msg["Subject"] = Header("📮 IT之家今日热点推送", "utf-8")
+            
+            # 连接SMTP服务器并发送
+            with smtplib.SMTP_SSL(smtp_server, smtp_port, timeout=30) as server:
+                server.login(sender_email, sender_auth_code)
+                server.sendmail(sender_email, receiver_email.split(","), msg.as_string())
+            
+            print("邮件发送成功！")
+            return
         
-        # 连接SMTP服务器并发送
-        with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
-            server.login(sender_email, sender_auth_code)
-            server.sendmail(sender_email, receiver_email.split(","), msg.as_string())
-        
-        print("邮件发送成功！")
+        except (SMTPException, ConnectionError) as e:
+            retries += 1
+            print(f"邮件发送失败，重试 {retries}/{max_retries}：{str(e)}")
+            time.sleep(5)  # 等待5秒后重试
     
-    except Exception as e:
-        print(f"邮件发送失败：{str(e)}")
-        raise e
+    print("邮件发送失败，已达到最大重试次数。")
+    raise Exception("邮件发送失败")
 
 # ---------------------- 主函数 ----------------------
 if __name__ == "__main__":

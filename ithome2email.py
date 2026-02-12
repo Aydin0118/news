@@ -42,7 +42,7 @@ print("爬取完成，内容长度：", len(mail_content))
 # 构建邮件对象
 message = MIMEText(mail_content, 'html', 'utf-8')
 # 邮件主题
-message['Subject'] = Header('腾讯热点新闻推送', 'utf-8')
+message['Subject'] = Header('IT之家日榜推送', 'utf-8')
 
 # ========== 关键修改：调整From字段格式 ==========
 # 方式1：最简合规格式（推荐）- 直接用邮箱地址，无多余名称

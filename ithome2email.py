@@ -32,7 +32,7 @@ sender = "3951015514@qq.com"
 # 发件人邮箱的SMTP授权码（替换成你的）
 auth_code = "gtpruuwjzupacefa"
 # 收件人邮箱（可写多个，用逗号分隔）
-receivers = ['abcdpx@qq.com']
+receivers = ['abcdpx@qq.com','19175276214@163.com']
 
 # 获取热点新闻内容
 print("开始爬取IT之家热点新闻...")

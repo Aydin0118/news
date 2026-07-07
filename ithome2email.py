@@ -28,9 +28,9 @@ print(res.status_code)
 
 # -------------------------- 配置邮件参数 --------------------------
 # 发件人邮箱（需开启SMTP，替换成你的）
-sender = "3951015514@qq.com"
+sender = ""
 # 发件人邮箱的SMTP授权码（替换成你的）
-auth_code = "gtpruuwjzupacefa"
+auth_code = ""
 # 收件人邮箱（可写多个，用逗号分隔）
 receivers = ['abcdpx@qq.com','19175276214@163.com']
 
